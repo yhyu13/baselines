@@ -8,11 +8,22 @@ from baselines.common.mpi_moments import mpi_moments
 from mpi4py import MPI
 from collections import deque
 
+from helper import *
+
 def traj_segment_generator(pi, env, horizon, stochastic):
     t = 0
-    ac = env.action_space.sample() # not used, just so we have the datatype
+    ac = np.zeros(18,dtype=np.float32)#env.action_space.sample() # not used, just so we have the datatype
     new = True # marks if we're on first timestep of an episode
     ob = env.reset()
+
+    ea=engineered_action()
+                
+    s,s1 = [],[]
+    ob = self.env.step(ea)[0]
+    s = ob
+    ob = self.env.step(ea)[0]
+    s1 = ob
+    s = process_state(s,s1,center=True)
 
     cur_ep_ret = 0 # return in current episode
     cur_ep_len = 0 # len of current episode
@@ -29,7 +40,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
 
     while True:
         prevac = ac
-        ac, vpred = pi.act(stochastic, ob)
+        ac, vpred = pi.act(stochastic, s)
         # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
@@ -42,7 +53,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
             ep_rets = []
             ep_lens = []
         i = t % horizon
-        obs[i] = ob
+        obs[i] = s
         vpreds[i] = vpred
         news[i] = new
         acs[i] = ac
@@ -50,6 +61,8 @@ def traj_segment_generator(pi, env, horizon, stochastic):
 
         ob, rew, new, _ = env.step(ac)
         rews[i] = rew
+        s = process_state(s1,ob,center=True)
+        s1 = ob
 
         cur_ep_ret += rew
         cur_ep_len += 1
@@ -59,6 +72,11 @@ def traj_segment_generator(pi, env, horizon, stochastic):
             cur_ep_ret = 0
             cur_ep_len = 0
             ob = env.reset()
+            s = ob
+            ob = self.env.step(ea)[0]
+            s1 = ob
+            s = process_state(s,s1,center=True)
+            
         t += 1
 
 def add_vtarg_and_adv(seg, gamma, lam):
@@ -89,8 +107,8 @@ def learn(env, policy_func, *,
         ):
     # Setup losses and stuff
     # ----------------------------------------
-    ob_space = env.observation_space
-    ac_space = env.action_space
+    ob_space = 58#env.observation_space
+    ac_space = 18#env.action_space
     pi = policy_func("pi", ob_space, ac_space) # Construct network for new policy
     oldpi = policy_func("oldpi", ob_space, ac_space) # Network for old policy
     atarg = tf.placeholder(dtype=tf.float32, shape=[None]) # Target advantage function (if applicable)
@@ -130,7 +148,7 @@ def learn(env, policy_func, *,
 
     # Prepare for rollouts
     # ----------------------------------------
-    seg_gen = traj_segment_generator(pi, env, timesteps_per_batch, stochastic=True)
+    seg_gen = traj_segment_generator(pi, env, timesteps_per_batch, stochastic=False)
 
     episodes_so_far = 0
     timesteps_so_far = 0
