@@ -6,11 +6,12 @@ from baselines import bench
 import os.path as osp
 from baselines import logger
 import sys
+from helper import ei
 
 
 def train(env_id, num_timesteps, vis, seed, diff):
     from baselines.ppo1 import mlp_policy, pposgd_simple
-    U.make_session(num_cpu=1).__enter__()
+    U.make_session(num_cpu=6).__enter__()
     set_global_seeds(seed)
     def policy_fn(name, ob_space, ac_space):
         return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
@@ -28,7 +29,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--env', help='environment ID', default='osim')
-    parser.add_argument('--seed', help='RNG seed', type=int, default=999)
+    parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--vis', help='visualize', action='store_true', default=False)
     parser.add_argument('--diff', help='difficulty', type=int, default=0)
     args = parser.parse_args()

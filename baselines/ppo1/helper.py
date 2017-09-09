@@ -70,7 +70,7 @@ import multiprocessing
 from multiprocessing import Process, Pipe
 
 def standalone_headless_isolated(conn,vis,seed,diff):
-    e = RunEnv(visualize=vis,seed=seed)
+    e = RunEnv(visualize=vis)
     while True:
         try:
             msg = conn.recv()
@@ -79,7 +79,7 @@ def standalone_headless_isolated(conn,vis,seed,diff):
             # msg[0] should be string
 
             if msg[0] == 'reset':
-                o = e.reset(difficulty=diff)
+                o = e.reset(difficulty=diff,seed=seed)
                 conn.send(o)
             elif msg[0] == 'step':
                 ordi = e.step(msg[1])
