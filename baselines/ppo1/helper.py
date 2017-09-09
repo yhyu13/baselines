@@ -7,12 +7,14 @@ import tensorflow as tf
 # Used to set worker network parameters to those of global network.
 
 # process state (the last 3 entires are obstacle info which should not be processed)
-def process_state(s,s1,center=True):
+def process_state(s,s1,center=True,diff=0):
     s = np.asarray(s)
     s1 = np.asarray(s1)
     s_14 = (s1[22:36]-s[22:36]) / 0.01
     s_3 = (s1[38:]-s[38:]) / 0.01
     s = np.hstack((s1[:36],s_14,s1[36:],s_3))
+    if diff == 0:
+        s[-6:] = 0.0 # if diff = 0, then manully turn off all obstacles
 
     if center:
       # transform into all relative quantities

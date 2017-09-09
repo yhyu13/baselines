@@ -19,10 +19,10 @@ def train(env_id, num_timesteps, vis, seed, diff):
     env = ei(vis,seed,diff)
     pposgd_simple.learn(env, policy_fn, 
             max_timesteps=num_timesteps,
-            timesteps_per_batch=2048,
+            timesteps_per_batch=1024,
             clip_param=0.2, entcoeff=0.0,
-            optim_epochs=10, optim_stepsize=3e-4, optim_batchsize=64,
-            gamma=0.995, lam=0.95, schedule='linear',
+            optim_epochs=15, optim_stepsize=3e-4, optim_batchsize=64,
+            gamma=0.995, lam=0.99, schedule='linear',
         )
 
 def main():

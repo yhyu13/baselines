@@ -2,6 +2,7 @@ from baselines.common.mpi_running_mean_std import RunningMeanStd
 import baselines.common.tf_util as U
 import tensorflow as tf
 from baselines.common.distributions import make_pdtype
+import numpy as np
 
 class MlpPolicy(object):
     recurrent = False
@@ -38,9 +39,10 @@ class MlpPolicy(object):
         else:
             pdparam = U.dense(last_out, pdtype.param_shape()[0], "polfinal", U.normc_initializer(0.01))
             '''
-        mean = tf.sigmoid(U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01)))
-        var = tf.nn.softplus(U.dense(last_out, ac_space, "polfinal_std", U.normc_initializer(0.01)))
-        self.pd = tf.contrib.distributions.Normal(mean,tf.sqrt(var))#pdtype.pdfromflat(pdparam)
+        mean = U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01))
+        logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-0.7)
+        self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())#tf.nn.softplus(U.dense(last_out, ac_space, "polfinal_std" U.normc_initializer(0.01)))
+        self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))#pdtype.pdfromflat(pdparam)
 
         self.state_in = []
         self.state_out = []

@@ -41,6 +41,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     while True:
         prevac = ac
         ac, vpred = pi.act(stochastic, s)
+        ac = np.clip(ac,0.05,0.95)
         # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
@@ -72,6 +73,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
             cur_ep_ret = 0
             cur_ep_len = 0
             ob = env.reset()
+            ob = env.step(ea)[0]
             s = ob
             ob = env.step(ea)[0]
             s1 = ob
@@ -141,6 +143,7 @@ def learn(env, policy_func,
 
     assign_old_eq_new = U.function([],[], updates=[tf.assign(oldv, newv)
         for (oldv, newv) in zipsame(oldpi.get_variables(), pi.get_variables())])
+    assign_std = U.function([],[], updates=[tf.assign(pi.logstd, np.ones((1, ac_space)).astype(np.float32)*-0.7-(1./max_timesteps))])
     compute_losses = U.function([ob, ac, atarg, ret, lrmult], losses)
 
     U.initialize()
@@ -190,7 +193,8 @@ def learn(env, policy_func,
         optim_batchsize = optim_batchsize or ob.shape[0]
 
         if hasattr(pi, "ob_rms"): pi.ob_rms.update(ob) # update running mean/std for policy
-
+        
+        assign_std() # set linear anneal logstd from -0.7 to -1.7
         assign_old_eq_new() # set old parameter values to new parameter values
         logger.log("Optimizing...")
         logger.log(fmt_row(13, loss_names))
