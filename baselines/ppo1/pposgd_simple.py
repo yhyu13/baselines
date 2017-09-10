@@ -9,17 +9,23 @@ from mpi4py import MPI
 from collections import deque
 
 from helper import *
+from ou_noise import OUNoise
+
+n_step = 5
+demo = 1
 
 def traj_segment_generator(pi, env, horizon, stochastic):
+    global n_step
     t = 0
     ac = np.zeros(18,dtype=np.float32)#env.action_space.sample() # not used, just so we have the datatype
     new = True # marks if we're on first timestep of an episode
+    noise = OUNoise(18,sigma=np.exp(pi.logstd.eval()[0,0]))
     ob = env.reset()
 
     ea=engineered_action()
                 
     s,s1 = [],[]
-    for i in range(50):
+    for i in range(demo):
         ob = env.step(ea)[0]
     ob = env.step(ea)[0]
     s = ob
@@ -43,7 +49,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     while True:
         prevac = ac
         ac, vpred = pi.act(stochastic, s)
-        ac = np.clip(ac,0.05,0.95)
+        ac = np.clip(np.clip(ac,0.05,0.95)+noise.noise(),0.05,0.95)
         # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
@@ -62,34 +68,34 @@ def traj_segment_generator(pi, env, horizon, stochastic):
         acs[i] = ac
         prevacs[i] = prevac
         temp = 0
-        for i in range(3):
+        for i in range(n_step):
             ob, rew, new, _ = env.step(ac)
-            if i == 1:
-                s1 = ob
-            rew = 0.1*(rew/0.01 + int(new) * 0.1 + int((ob[2]/0.70)<1.0) * -1.)
-            temp += 0.995*rew
+            rew = (rew/0.01 + int(new) * 0.1 + int((ob[2]/0.70)<1.0) * -1.)
+            temp += rew
             if new: 
                 break
+            s1 = ob
         rew = temp
         rews[i] = rew
         s = process_state(s1,ob,center=True)
         s1 = ob
 
         cur_ep_ret += rew
-        cur_ep_len += 3
+        cur_ep_len += n_step
         if new:
             ep_rets.append(cur_ep_ret)
             ep_lens.append(cur_ep_len)
             cur_ep_ret = 0
             cur_ep_len = 0
             ob = env.reset()
-            for i in range(50):
+            for i in range(demo):
                 ob = env.step(ea)[0]
             ob = env.step(ea)[0]
             s = ob
             ob = env.step(ea)[0]
             s1 = ob
             s = process_state(s,s1,center=True)
+            noise.reset(sigma=np.exp(pi.logstd.eval()[0,0]))
             
         t += 1
 
@@ -250,7 +256,7 @@ def learn(sess,load_model, fixed_var, env, policy_func,
         episodes_so_far += len(lens)
         timesteps_so_far += sum(lens)
         iters_so_far += 1
-	if iters_so_far % 100 == 0:#save model every 100 iteration
+	if iters_so_far % 20 == 0:#save model every 100 iteration
 	    saver.save(sess,"./models/model-" + str(iters_so_far)+"-"+str(timesteps_so_far) + ".ckpt")
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
