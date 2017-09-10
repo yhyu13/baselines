@@ -7,22 +7,22 @@ import os.path as osp
 from baselines import logger
 import sys
 from helper import ei
+import tensorflow as tf
 
 
 def train(env_id, num_timesteps, vis, seed, diff):
     from baselines.ppo1 import mlp_policy, pposgd_simple
-    sess = U.make_session(num_cpu=2).__enter__()
+    sess = U.make_session(num_cpu=1).__enter__()
     set_global_seeds(seed)
     def policy_fn(name, ob_space, ac_space):
         return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
-            hid_size=64, num_hid_layers=2)
+            hid_size=100, num_hid_layers=3)
     env = ei(vis,seed,diff)
-    saver = tf.train.Saver()
-    pposgd_simple.learn(sess,saver,env, policy_fn, 
+    pposgd_simple.learn(sess,env, policy_fn, 
             max_timesteps=num_timesteps,
-            timesteps_per_batch=2048,
+            timesteps_per_batch=512,
             clip_param=0.2, entcoeff=0.0,
-            optim_epochs=15, optim_stepsize=1e-4, optim_batchsize=128,
+            optim_epochs=10, optim_stepsize=5e-4, optim_batchsize=256,
             gamma=0.995, lam=0.99, schedule='linear',
         )
 

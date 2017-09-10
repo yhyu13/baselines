@@ -40,10 +40,12 @@ class MlpPolicy(object):
             pdparam = U.dense(last_out, pdtype.param_shape()[0], "polfinal", U.normc_initializer(0.01))
             '''
         mean = U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01))
-        logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-0.7)
-        self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())#tf.nn.softplus(U.dense(last_out, ac_space, "polfinal_std" U.normc_initializer(0.01)))
-        self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))#pdtype.pdfromflat(pdparam)
-
+        #logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-0.7)
+        #self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())
+        self.var = tf.nn.softplus(U.dense(last_out, ac_space, "polfinal_var" U.normc_initializer(0.01)))
+        #self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))#pdtype.pdfromflat(pdparam)
+        self.pd = tf.contrib.distributions.Normal(mean,tf.sqrt(self.var))
+        
         self.state_in = []
         self.state_out = []
 
