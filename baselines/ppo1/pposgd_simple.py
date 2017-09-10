@@ -19,6 +19,8 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     ea=engineered_action()
                 
     s,s1 = [],[]
+    for i in range(50):
+        ob = env.step(ea)[0]
     ob = env.step(ea)[0]
     s = ob
     ob = env.step(ea)[0]
@@ -59,21 +61,30 @@ def traj_segment_generator(pi, env, horizon, stochastic):
         news[i] = new
         acs[i] = ac
         prevacs[i] = prevac
-
-        ob, rew, new, _ = env.step(ac)
-        
-        rews[i] = rew/0.01 + int(new) * 0.1 + int((ob[2]/0.75)<1.0) * -1. 
+        temp = 0
+        for i in range(3):
+            ob, rew, new, _ = env.step(ac)
+            if i == 1:
+                s1 = ob
+            rew = 0.1*(rew/0.01 + int(new) * 0.1 + int((ob[2]/0.70)<1.0) * -1.)
+            temp += 0.995*rew
+            if new: 
+                break
+        rew = temp
+        rews[i] = rew
         s = process_state(s1,ob,center=True)
         s1 = ob
 
         cur_ep_ret += rew
-        cur_ep_len += 1
+        cur_ep_len += 3
         if new:
             ep_rets.append(cur_ep_ret)
             ep_lens.append(cur_ep_len)
             cur_ep_ret = 0
             cur_ep_len = 0
             ob = env.reset()
+            for i in range(50):
+                ob = env.step(ea)[0]
             ob = env.step(ea)[0]
             s = ob
             ob = env.step(ea)[0]
@@ -98,7 +109,7 @@ def add_vtarg_and_adv(seg, gamma, lam):
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
     seg["tdlamret"] = seg["adv"] + seg["vpred"]
 
-def learn(sess, env, policy_func,
+def learn(sess,load_model, fixed_var, env, policy_func,
         timesteps_per_batch, # timesteps per actor per update
         clip_param, entcoeff, # clipping parameter epsilon, entropy coeff
         optim_epochs, optim_stepsize, optim_batchsize,# optimization hypers
@@ -144,13 +155,18 @@ def learn(sess, env, policy_func,
 
     assign_old_eq_new = U.function([],[], updates=[tf.assign(oldv, newv)
         for (oldv, newv) in zipsame(oldpi.get_variables(), pi.get_variables())])
-    assign_std = U.function([],[], updates=[tf.assign(pi.logstd, np.ones((1, ac_space)).astype(np.float32)*-0.7-(1./max_timesteps))])
+    if fixed_var:
+        assign_std = U.function([],[], updates=[tf.assign_add(pi.logstd, np.ones((1, ac_space)).astype(np.float32)*-(2./(max_timesteps/timesteps_per_batch)))])
     compute_losses = U.function([ob, ac, atarg, ret, lrmult], losses)
 
     U.initialize()
     adam.sync()
     
     saver = tf.train.Saver(max_to_keep=5)
+    
+    if load_model:
+        ckpt = tf.train.get_checkpoint_state("./models")
+        saver.restore(sess,ckpt.model_checkpoint_path)
 
     # Prepare for rollouts
     # ----------------------------------------
@@ -197,7 +213,9 @@ def learn(sess, env, policy_func,
 
         if hasattr(pi, "ob_rms"): pi.ob_rms.update(ob) # update running mean/std for policy
         
-        assign_std() # set linear anneal logstd from -0.7 to -1.7
+        if fixed_var:
+            #print(pi.logstd.eval())
+            assign_std() # set linear anneal logstd from -0.7 to -1.7
         assign_old_eq_new() # set old parameter values to new parameter values
         logger.log("Optimizing...")
         logger.log(fmt_row(13, loss_names))

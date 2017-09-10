@@ -11,7 +11,7 @@ class MlpPolicy(object):
             self._init(*args, **kwargs)
             self.scope = tf.get_variable_scope().name
 
-    def _init(self, ob_space, ac_space, hid_size, num_hid_layers, gaussian_fixed_var=True):
+    def _init(self, ob_space, ac_space, hid_size, num_hid_layers, gaussian_fixed_var):
         #assert isinstance(ob_space, gym.spaces.Box)
 
         #self.pdtype = pdtype = tf.contrib.distributions.Normal()#make_pdtype(ac_space)
@@ -31,21 +31,16 @@ class MlpPolicy(object):
         last_out = obz
         for i in range(num_hid_layers):
             last_out = tf.nn.tanh(U.dense(last_out, hid_size, "polfc%i"%(i+1), weight_init=U.normc_initializer(1.0)))
-            '''
-        if gaussian_fixed_var: #and isinstance(ac_space, gym.spaces.Box):
-            mean = U.dense(last_out, pdtype.param_shape()[0]//2, "polfinal", U.normc_initializer(0.01))
-            logstd = tf.get_variable(name="logstd", shape=[1, pdtype.param_shape()[0]//2], initializer=tf.zeros_initializer())
-            pdparam = U.concatenate([mean, mean * 0.0 + logstd], axis=1)
+           
+        mean = tf.sigmoid(U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01)))
+        if gaussian_fixed_var: #and isinstance(ac_space, gym.spaces.Box):    
+            logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-0.1)
+            self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())
+            self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))
         else:
-            pdparam = U.dense(last_out, pdtype.param_shape()[0], "polfinal", U.normc_initializer(0.01))
-            '''
-        mean = U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01))
-        #logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-0.7)
-        #self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())
-        self.var = tf.nn.softplus(U.dense(last_out, ac_space, "polfinal_var" U.normc_initializer(0.01)))
-        #self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))#pdtype.pdfromflat(pdparam)
-        self.pd = tf.contrib.distributions.Normal(mean,tf.sqrt(self.var))
-        
+            self.var = tf.nn.softplus(U.dense(last_out, ac_space, "polfinal_var", U.normc_initializer(0.01)))
+            self.pd = tf.contrib.distributions.Normal(mean,tf.sqrt(self.var))
+            
         self.state_in = []
         self.state_out = []
 
