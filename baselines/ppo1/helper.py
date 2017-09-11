@@ -6,6 +6,10 @@ import tensorflow as tf
 # Copies one set of variables to another.
 # Used to set worker network parameters to those of global network.
 
+
+def dlrelu(x, alpha=0.2):
+  return tf.nn.relu(x) - alpha * tf.nn.relu(0.05-x) - (1 - alpha) *  tf.nn.relu(x-0.95) 
+
 # process state (the last 3 entires are obstacle info which should not be processed)
 def process_state(s,s1,center=True,diff=0):
     s = np.asarray(s)

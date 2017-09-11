@@ -19,7 +19,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     t = 0
     ac = np.zeros(18,dtype=np.float32)#env.action_space.sample() # not used, just so we have the datatype
     new = True # marks if we're on first timestep of an episode
-    noise = OUNoise(18,sigma=np.exp(pi.logstd.eval()[0,0]))
+    noise = OUNoise(18)
     ob = env.reset()
 
     ea=engineered_action()
@@ -69,7 +69,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
         prevacs[i] = prevac
         temp = 0
         for i in range(n_step):
-            ob, rew, new, _ = env.step(ac)
+            ob, rew, new, _ = env.step(ac+noise.noise())
             rew = (rew/0.01 + int(new) * 0.1 + int((ob[2]/0.70)<1.0) * -1.)
             temp += rew
             if new: 
@@ -95,7 +95,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
             ob = env.step(ea)[0]
             s1 = ob
             s = process_state(s,s1,center=True)
-            noise.reset(sigma=np.exp(pi.logstd.eval()[0,0]))
+            noise.reset()
             
         t += 1
 
@@ -162,7 +162,7 @@ def learn(sess,load_model, fixed_var, env, policy_func,
     assign_old_eq_new = U.function([],[], updates=[tf.assign(oldv, newv)
         for (oldv, newv) in zipsame(oldpi.get_variables(), pi.get_variables())])
     if fixed_var:
-        assign_std = U.function([],[], updates=[tf.assign_add(pi.logstd, np.ones((1, ac_space)).astype(np.float32)*-(2./(max_timesteps/timesteps_per_batch)))])
+        assign_std = U.function([],[], updates=[tf.assign_add(pi.logstd, np.ones((1, ac_space)).astype(np.float32)*-(1./(max_timesteps/timesteps_per_batch)))])
     compute_losses = U.function([ob, ac, atarg, ret, lrmult], losses)
 
     U.initialize()
@@ -250,6 +250,7 @@ def learn(sess,load_model, fixed_var, env, policy_func,
         lens, rews = map(flatten_lists, zip(*listoflrpairs))
         lenbuffer.extend(lens)
         rewbuffer.extend(rews)
+        logger.record_tabular("Iteration#", iters_so_far)
         logger.record_tabular("EpLenMean", np.mean(lenbuffer))
         logger.record_tabular("EpRewMean", np.mean(rewbuffer))
         logger.record_tabular("EpThisIter", len(lens))

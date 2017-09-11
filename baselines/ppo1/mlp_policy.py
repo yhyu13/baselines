@@ -3,6 +3,7 @@ import baselines.common.tf_util as U
 import tensorflow as tf
 from baselines.common.distributions import make_pdtype
 import numpy as np
+from helper import dlrelu
 
 class MlpPolicy(object):
     recurrent = False
@@ -31,10 +32,10 @@ class MlpPolicy(object):
         last_out = obz
         for i in range(num_hid_layers):
             last_out = tf.nn.tanh(U.dense(last_out, hid_size, "polfc%i"%(i+1), weight_init=U.normc_initializer(1.0)))   
-        mean = tf.sigmoid(U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01)))
+        mean = dlrelu(U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01)))
         
         if gaussian_fixed_var: #and isinstance(ac_space, gym.spaces.Box):    
-            logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-1.)
+            logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-3)
             self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())
             self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))
         else:
