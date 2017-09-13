@@ -11,8 +11,8 @@ from collections import deque
 from helper import *
 from ou_noise import OUNoise
 
-n_step = 5
-demo = 1
+n_step = 3
+demo = 50
 
 def traj_segment_generator(pi, env, horizon, stochastic):
     global n_step
@@ -22,11 +22,10 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     noise = OUNoise(18)
     ob = env.reset()
 
-    ea=engineered_action()
+    ea=engineered_action(np.random.rand())
                 
     s,s1 = [],[]
-    for i in range(demo):
-        ob = env.step(ea)[0]
+    use_demo = np.random.rand()<0.5
     ob = env.step(ea)[0]
     s = ob
     ob = env.step(ea)[0]
@@ -49,7 +48,8 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     while True:
         prevac = ac
         ac, vpred = pi.act(stochastic, s)
-        ac = np.clip(np.clip(ac,0.05,0.95)+noise.noise(),0.05,0.95)
+        print(vpred)
+        ac = np.clip(ac + noise.noise()*0,0.05,0.95)
         # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
@@ -69,7 +69,10 @@ def traj_segment_generator(pi, env, horizon, stochastic):
         prevacs[i] = prevac
         temp = 0
         for i in range(n_step):
-            ob, rew, new, _ = env.step(ac+noise.noise())
+            if use_demo and cur_ep_len < -1:
+                ob, rew, new, _ = env.step(ea)
+            else:
+                ob, rew, new, _ = env.step(ac+noise.noise()*0.0)
             rew = (rew/0.01 + int(new) * 0.1 + int((ob[2]/0.70)<1.0) * -1.)
             temp += rew
             if new: 
@@ -88,8 +91,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
             cur_ep_ret = 0
             cur_ep_len = 0
             ob = env.reset()
-            for i in range(demo):
-                ob = env.step(ea)[0]
+            use_demo = np.random.rand()<0.5
             ob = env.step(ea)[0]
             s = ob
             ob = env.step(ea)[0]

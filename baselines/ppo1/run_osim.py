@@ -13,16 +13,16 @@ import tensorflow as tf
 def train(env_id, num_timesteps, vis, seed, diff, load_model,fixed_var):
     from baselines.ppo1 import mlp_policy, pposgd_simple
     sess = U.make_session(num_cpu=1).__enter__()
-    set_global_seeds(seed)
+    #set_global_seeds(seed)
     def policy_fn(name, ob_space, ac_space):
         return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
-            hid_size=64, num_hid_layers=3,gaussian_fixed_var=fixed_var)
+            hid_size=128, num_hid_layers=2,gaussian_fixed_var=fixed_var)
     env = ei(vis,seed,diff)
     pposgd_simple.learn(sess, load_model,fixed_var,env,policy_fn, 
             max_timesteps=num_timesteps,
             timesteps_per_batch=512,
             clip_param=0.2, entcoeff=0.0,
-            optim_epochs=15, optim_stepsize=5e-4, optim_batchsize=128,
+            optim_epochs=15, optim_stepsize=5e-4, optim_batchsize=256,
             gamma=0.995, lam=0.99, schedule='linear',
         )
 

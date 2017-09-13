@@ -26,16 +26,16 @@ class MlpPolicy(object):
         obz = tf.clip_by_value((ob - self.ob_rms.mean) / self.ob_rms.std, -5.0, 5.0)
         last_out = obz
         for i in range(num_hid_layers):
-            last_out = tf.nn.tanh(U.dense(last_out, hid_size, "vffc%i"%(i+1), weight_init=U.normc_initializer(1.0)))
+            last_out = tf.tanh(U.dense(last_out, hid_size, "vffc%i"%(i+1), weight_init=U.normc_initializer(1.0)))
         self.vpred = U.dense(last_out, 1, "vffinal", weight_init=U.normc_initializer(0.01))[:,0]
 
         last_out = obz
         for i in range(num_hid_layers):
-            last_out = tf.nn.tanh(U.dense(last_out, hid_size, "polfc%i"%(i+1), weight_init=U.normc_initializer(1.0)))   
+            last_out = tf.tanh(U.dense(last_out, hid_size, "polfc%i"%(i+1), weight_init=U.normc_initializer(1.0)))   
         mean = dlrelu(U.dense(last_out, ac_space, "polfinal_mean", U.normc_initializer(0.01)))
         
         if gaussian_fixed_var: #and isinstance(ac_space, gym.spaces.Box):    
-            logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-3)
+            logstd = tf.Variable(initial_value = np.ones((1,ac_space)).astype(np.float32)*-3.)
             self.logstd = tf.get_variable(name="logstd",initializer=logstd.initialized_value())
             self.pd = tf.contrib.distributions.Normal(mean,tf.exp(self.logstd))
         else:
