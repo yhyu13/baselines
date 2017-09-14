@@ -16,14 +16,14 @@ def train(env_id, num_timesteps, vis, seed, diff, load_model,fixed_var):
     #set_global_seeds(seed)
     def policy_fn(name, ob_space, ac_space):
         return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
-            hid_size=128, num_hid_layers=2,gaussian_fixed_var=fixed_var)
+            hid_size=300, num_hid_layers=2,gaussian_fixed_var=fixed_var,atoms=11)
     env = ei(vis,seed,diff)
     pposgd_simple.learn(sess, load_model,fixed_var,env,policy_fn, 
             max_timesteps=num_timesteps,
-            timesteps_per_batch=512,
+            timesteps_per_batch=16,
             clip_param=0.2, entcoeff=0.0,
-            optim_epochs=15, optim_stepsize=5e-4, optim_batchsize=256,
-            gamma=0.995, lam=0.99, schedule='linear',
+            optim_epochs=10, optim_stepsize=1e-5, optim_batchsize=1,
+            gamma=0.99, lam=0.95, schedule='linear',atoms=11
         )
 
 def main():

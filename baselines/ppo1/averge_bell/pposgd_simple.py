@@ -11,11 +11,11 @@ from collections import deque
 from helper import *
 from ou_noise import OUNoise
 
-N_STEP = 3
-DEMO = 50
-ATOMS=11
+n_step = 3
+demo = 50
 
-def traj_segment_generator(pi, env, horizon, stochastic=False):
+def traj_segment_generator(pi, env, horizon, stochastic):
+    global n_step
     t = 0
     ac = np.zeros(18,dtype=np.float32)#env.action_space.sample() # not used, just so we have the datatype
     new = True # marks if we're on first timestep of an episode
@@ -40,7 +40,7 @@ def traj_segment_generator(pi, env, horizon, stochastic=False):
     # Initialize history arrays
     obs = np.array([s for _ in range(horizon)])
     rews = np.zeros(horizon, 'float32')
-    vpreds = np.zeros((horizon,ATOMS), 'float32') # hangyu5 extend vpreds
+    vpreds = np.zeros(horizon, 'float32')
     news = np.zeros(horizon, 'int32')
     acs = np.array([ac for _ in range(horizon)])
     prevacs = acs.copy()
@@ -48,8 +48,8 @@ def traj_segment_generator(pi, env, horizon, stochastic=False):
     while True:
         prevac = ac
         ac, vpred = pi.act(stochastic, s)
-        #print(vpred)
-        ac = np.clip(ac + noise.noise(),0.05,0.95)
+        print(vpred)
+        ac = np.clip(ac + noise.noise()*0,0.05,0.95)
         # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
@@ -68,12 +68,12 @@ def traj_segment_generator(pi, env, horizon, stochastic=False):
         acs[i] = ac
         prevacs[i] = prevac
         temp = 0
-        for i in range(N_STEP):
-            if use_demo and cur_ep_len < DEMO:
+        for i in range(n_step):
+            if use_demo and cur_ep_len < -1:
                 ob, rew, new, _ = env.step(ea)
             else:
-                ob, rew, new, _ = env.step(ac+noise.noise()*0.2)
-            rew = (rew/0.01 + int(new) * 0.1 + int((ob[2]/0.80)<1.0) * -1.)
+                ob, rew, new, _ = env.step(ac+noise.noise()*0.0)
+            rew = (rew/0.01 + int(new) * 0.1 + int((ob[2]/0.70)<1.0) * -1.)
             temp += rew
             if new: 
                 break
@@ -84,7 +84,7 @@ def traj_segment_generator(pi, env, horizon, stochastic=False):
         s1 = ob
 
         cur_ep_ret += rew
-        cur_ep_len += N_STEP
+        cur_ep_len += n_step
         if new:
             ep_rets.append(cur_ep_ret)
             ep_lens.append(cur_ep_len)
@@ -101,12 +101,12 @@ def traj_segment_generator(pi, env, horizon, stochastic=False):
             
         t += 1
 
-def add_vtarg_and_adv(seg, gamma, lam, Z):
+def add_vtarg_and_adv(seg, gamma, lam):
     """
     Compute target value using TD(lambda) estimator, and advantage with GAE(lambda)
     """
     new = np.append(seg["new"], 0) # last element is only used for last vtarg, but we already zeroed it if last new = 1
-    vpred = np.append(seg["vpred"].dot(Z), seg["nextvpred"].dot(Z)) # value distribution dot product with z vector equals Q value
+    vpred = np.append(seg["vpred"], seg["nextvpred"])
     T = len(seg["rew"])
     seg["adv"] = gaelam = np.empty(T, 'float32')
     rew = seg["rew"]
@@ -115,7 +115,7 @@ def add_vtarg_and_adv(seg, gamma, lam, Z):
         nonterminal = 1-new[t+1]
         delta = rew[t] + gamma * vpred[t+1] * nonterminal - vpred[t]
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
-    seg["tdlamret"] = seg["adv"] + (seg["vpred"].dot(Z)) # value distribution dot product with z vector equals Q value
+    seg["tdlamret"] = seg["adv"] + seg["vpred"]
 
 def learn(sess,load_model, fixed_var, env, policy_func,
         timesteps_per_batch, # timesteps per actor per update
@@ -125,8 +125,8 @@ def learn(sess,load_model, fixed_var, env, policy_func,
         max_timesteps=0, max_episodes=0, max_iters=0, max_seconds=0,  # time constraint
         callback=None, # you can do anything in the callback, since it takes locals(), globals()
         adam_epsilon=1e-5,
-        schedule='constant', # annealing for stepsize parameters (epsilon and adam)
-        atoms=11):
+        schedule='constant' # annealing for stepsize parameters (epsilon and adam)
+        ):
     # Setup losses and stuff
     # ----------------------------------------
     ob_space = 58#env.observation_space
@@ -135,38 +135,12 @@ def learn(sess,load_model, fixed_var, env, policy_func,
     oldpi = policy_func("oldpi", ob_space, ac_space) # Network for old policy
     atarg = tf.placeholder(dtype=tf.float32, shape=[None]) # Target advantage function (if applicable)
     ret = tf.placeholder(dtype=tf.float32, shape=[None]) # Empirical return
-    
-    '''
-    Sep12th distributional bellman
-    '''
-    atoms = atoms
-    v_max = 5. # DIY,pls
-    v_min = -5. # DIY,pls
-    delta_z = (v_max - v_min) / (atoms - 1.)
-    Z = np.asarray([v_min + i * delta_z for i in range(atoms)]).astype(np.float32)
-    z = tf.stack(Z) # shape (BATCH_SIZE,atoms)
-
 
     lrmult = tf.placeholder(name='lrmult', dtype=tf.float32, shape=[]) # learning rate multiplier, updated with schedule
     clip_param = clip_param * lrmult # Annealed cliping parameter epislon
 
     ob = U.get_placeholder_cached(name="ob")
     ac = tf.placeholder(dtype=tf.float32, shape=[None,ac_space], name="ac")
-    m_batch = tf.placeholder(dtype=tf.float32, shape=[None,atoms],name="m_batch")
-    
-    '''
-    distributional bellman continue
-    '''
-    Tz = tf.minimum(v_max, tf.maximum(v_min,ret + gamma * z))
-    b = (Tz - v_min) / delta_z
-    l,u = tf.floor(b+1e-3),tf.ceil(b-1e-3)
-    #print(l)
-    #print(u)
-    p = pi.vpred
-    A = p * (u - b)
-    B = p * (b - l)
-    l,u = tf.cast(l,tf.int32),tf.cast(u,tf.int32)
-    
 
     kloldnew = tf.contrib.distributions.kl_divergence(oldpi.pd,pi.pd)
     ent = pi.pd.entropy()
@@ -178,21 +152,20 @@ def learn(sess,load_model, fixed_var, env, policy_func,
     surr1 = ratio * atarg # surrogate from conservative policy iteration
     surr2 = U.clip(ratio, 1.0 - clip_param, 1.0 + clip_param) * atarg #
     pol_surr = - U.mean(tf.minimum(surr1, surr2)) # PPO's pessimistic surrogate (L^CLIP)
-    vf_loss = - U.sum(m_batch * tf.log(p)) # hangyu5 change 2norm to cross entropy
+    vf_loss = U.mean(tf.square(pi.vpred - ret))
     total_loss = pol_surr + pol_entpen + vf_loss
     losses = [pol_surr, pol_entpen, vf_loss, meankl, meanent]
     loss_names = ["pol_surr", "pol_entpen", "vf_loss", "kl", "ent"]
 
     var_list = pi.get_trainable_variables()
-    lossandgrad = U.function([ob, ac, atarg, ret, lrmult,m_batch], losses + [U.flatgrad(total_loss, var_list)])
+    lossandgrad = U.function([ob, ac, atarg, ret, lrmult], losses + [U.flatgrad(total_loss, var_list)])
     adam = MpiAdam(var_list, epsilon=adam_epsilon)
 
     assign_old_eq_new = U.function([],[], updates=[tf.assign(oldv, newv)
         for (oldv, newv) in zipsame(oldpi.get_variables(), pi.get_variables())])
     if fixed_var:
         assign_std = U.function([],[], updates=[tf.assign_add(pi.logstd, np.ones((1, ac_space)).astype(np.float32)*-(1./(max_timesteps/timesteps_per_batch)))])
-    compute_losses = U.function([ob, ac, atarg, ret, lrmult,m_batch], losses)
-    prepare_m_batch = U.function([ob,ret], [A,B,l,u]) # hangyu5 get A,B,l,u to prepare m_batch
+    compute_losses = U.function([ob, ac, atarg, ret, lrmult], losses)
 
     U.initialize()
     adam.sync()
@@ -200,11 +173,12 @@ def learn(sess,load_model, fixed_var, env, policy_func,
     saver = tf.train.Saver(max_to_keep=5)
     
     if load_model:
-        U.load_state("./models")
+        ckpt = tf.train.get_checkpoint_state("./models")
+        saver.restore(sess,ckpt.model_checkpoint_path)
 
     # Prepare for rollouts
     # ----------------------------------------
-    seg_gen = traj_segment_generator(pi, env, timesteps_per_batch, stochastic=False)
+    seg_gen = traj_segment_generator(pi, env, timesteps_per_batch, stochastic=True)
 
     episodes_so_far = 0
     timesteps_so_far = 0
@@ -236,11 +210,11 @@ def learn(sess,load_model, fixed_var, env, policy_func,
         logger.log("********** Iteration %i ************"%iters_so_far)
 
         seg = next(seg_gen)#seg_gen.__next__()
-        add_vtarg_and_adv(seg, gamma, lam, Z)
+        add_vtarg_and_adv(seg, gamma, lam)
 
         # ob, ac, atarg, ret, td1ret = map(np.concatenate, (obs, acs, atargs, rets, td1rets))
-        ob, ac, atarg, tdlamret = seg["ob"], seg["ac"], seg["adv"], seg["tdlamret"] 
-        vpredbefore = seg["vpred"].dot(Z) # predicted value function before udpate
+        ob, ac, atarg, tdlamret = seg["ob"], seg["ac"], seg["adv"], seg["tdlamret"]
+        vpredbefore = seg["vpred"] # predicted value function before udpate
         atarg = (atarg - atarg.mean()) / atarg.std() # standardized advantage function estimate
         d = Dataset(dict(ob=ob, ac=ac, atarg=atarg, vtarg=tdlamret), shuffle=not pi.recurrent)
         optim_batchsize = optim_batchsize or ob.shape[0]
@@ -257,19 +231,7 @@ def learn(sess,load_model, fixed_var, env, policy_func,
         for _ in range(optim_epochs):
             losses = [] # list of tuples, each of which gives the loss for a minibatch
             for batch in d.iterate_once(optim_batchsize):
-            
-                '''
-                distributional bellman continue
-                '''
-                A,B,l,u = prepare_m_batch(batch["ob"],batch["vtarg"])
-                #print(A,B,l,u)
-                m_batch = np.zeros(atoms).astype(np.float32)
-                for i in range(atoms):
-                    m_batch[l[i]]+=A[0,i]
-                    m_batch[u[i]]+=B[0,i]
-                m_batch = np.asarray([m_batch])
-                    
-                temp = lossandgrad(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult, m_batch) # hangyu5 pass m_batch as a placeholder
+                temp = lossandgrad(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult)
                 newlosses, g = list(temp[:-1]),temp[-1]
                 adam.update(g, optim_stepsize * cur_lrmult) 
                 losses.append(newlosses)
@@ -278,16 +240,7 @@ def learn(sess,load_model, fixed_var, env, policy_func,
         logger.log("Evaluating losses...")
         losses = []
         for batch in d.iterate_once(optim_batchsize):
-        
-            A,B,l,u = prepare_m_batch(batch["ob"],batch["vtarg"])
-            #print(A,B,l,u)
-            m_batch = np.zeros(atoms).astype(np.float32)
-            for i in range(atoms):
-                m_batch[l[i]]+=A[0,i]
-                m_batch[u[i]]+=B[0,i]
-            m_batch = np.asarray([m_batch])
-        
-            newlosses = compute_losses(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult, m_batch)
+            newlosses = compute_losses(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult)
             losses.append(newlosses)            
         meanlosses,_,_ = mpi_moments(losses, axis=0)
         logger.log(fmt_row(13, meanlosses))
