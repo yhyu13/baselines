@@ -11,6 +11,7 @@ from baselines import logger
 import numpy as np
 import tensorflow as tf
 from mpi4py import MPI
+from helper import *
 
 
 def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, param_noise, actor, critic,
@@ -19,10 +20,10 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
     tau=0.01, eval_env=None, param_noise_adaption_interval=50):
     rank = MPI.COMM_WORLD.Get_rank()
 
-    assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
-    max_action = env.action_space.high
+    #assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
+    max_action = 1.
     logger.info('scaling actions by {} before executing in env'.format(max_action))
-    agent = DDPG(actor, critic, memory, env.observation_space.shape, env.action_space.shape,
+    agent = DDPG(actor, critic, memory, (58,), (18,),
         gamma=gamma, tau=tau, normalize_returns=normalize_returns, normalize_observations=normalize_observations,
         batch_size=batch_size, action_noise=action_noise, param_noise=param_noise, critic_l2_reg=critic_l2_reg,
         actor_lr=actor_lr, critic_lr=critic_lr, enable_popart=popart, clip_norm=clip_norm,
@@ -47,8 +48,11 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
 
         agent.reset()
         obs = env.reset()
-        if eval_env is not None:
-            eval_obs = eval_env.reset()
+        # hangyu5 Sep17th
+        ea = engineered_action(0.1)
+        s = env.step(ea)[0]
+        s1 = env.step(ea)[0]
+        s = process_state(s,s1)
         done = False
         episode_reward = 0.
         episode_step = 0
@@ -71,25 +75,28 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 # Perform rollouts.
                 for t_rollout in range(nb_rollout_steps):
                     # Predict next action.
-                    action, q = agent.pi(obs, apply_noise=True, compute_Q=True)
-                    assert action.shape == env.action_space.shape
+                    action, q = agent.pi(s, apply_noise=True, compute_Q=True)
+                    #assert action.shape == env.action_space.shape
 
                     # Execute next action.
                     if rank == 0 and render:
                         env.render()
-                    assert max_action.shape == action.shape
+                    #assert max_action.shape == action.shape
                     new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
+                    s1 = process_state(s1,new_obs)
                     t += 1
                     if rank == 0 and render:
                         env.render()
+                    r = (r/0.01 + int(not done) * 0.1 + int((s1[2]/0.80)<1.0) * -1.)
                     episode_reward += r
                     episode_step += 1
 
                     # Book-keeping.
                     epoch_actions.append(action)
                     epoch_qs.append(q)
-                    agent.store_transition(obs, action, r, new_obs, done)
-                    obs = new_obs
+                    agent.store_transition(s, action, r, s1, done)
+                    s = s1
+                    s1 = new_obs
 
                     if done:
                         # Episode done.
@@ -102,7 +109,10 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                         episodes += 1
 
                         agent.reset()
-                        obs = env.reset()
+                        env.reset()
+                        s = env.step(ea)[0]
+                        s1 = env.step(ea)[0]
+                        s = process_state(s,s1)
 
                 # Train.
                 epoch_actor_losses = []
@@ -123,13 +133,20 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 eval_episode_rewards = []
                 eval_qs = []
                 if eval_env is not None:
+                    eval_env.reset()
+                    s = env.step(ea)[0]
+                    s1 = env.step(ea)[0]
+                    s = process_state(s,s1)
                     eval_episode_reward = 0.
                     for t_rollout in range(nb_eval_steps):
-                        eval_action, eval_q = agent.pi(eval_obs, apply_noise=False, compute_Q=True)
+                        eval_action, eval_q = agent.pi(s, apply_noise=False, compute_Q=True)
                         eval_obs, eval_r, eval_done, eval_info = eval_env.step(max_action * eval_action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
                         if render_eval:
                             eval_env.render()
                         eval_episode_reward += eval_r
+                        s1 = process_state(s1,eval_obs)
+                        s = s1
+                        s1 = eval_obs
 
                         eval_qs.append(eval_q)
                         if eval_done:
@@ -137,6 +154,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                             eval_episode_rewards.append(eval_episode_reward)
                             eval_episode_rewards_history.append(eval_episode_reward)
                             eval_episode_reward = 0.
+                            break
 
             # Log stats.
             epoch_train_duration = time.time() - epoch_start_time

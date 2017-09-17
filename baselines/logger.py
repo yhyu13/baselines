@@ -178,19 +178,19 @@ def log(level=INFO,*args):
 
 
 def debug(*args):
-    log(*args, level=DEBUG)
+    log(level=DEBUG,*args)
 
 
 def info(*args):
-    log(*args, level=INFO)
+    log(*args)
 
 
 def warn(*args):
-    log(*args, level=WARN)
+    log(level=WARN,*args)
 
 
 def error(*args):
-    log(*args, level=ERROR)
+    log(level=ERROR,*args)
 
 
 def set_level(level):
