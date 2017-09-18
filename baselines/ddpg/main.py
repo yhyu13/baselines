@@ -22,7 +22,7 @@ def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
     if rank != 0: logger.set_level(logger.DISABLED)
 
     # Create envs.
-    env = ei(vis=True,seed=seed,diff=0)#gym.make(env_id)
+    env = ei(vis=False,seed=seed,diff=0)#gym.make(env_id)
     #env = bench.Monitor(env, logger.get_dir() and os.path.join(logger.get_dir(), "%i.monitor.json"%rank))
     #gym.logger.setLevel(logging.WARN)
     
@@ -50,7 +50,7 @@ def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
             action_noise = NormalActionNoise(mu=np.zeros(nb_actions), sigma=float(stddev) * np.ones(nb_actions))
         elif 'ou' in current_noise_type:
             _, stddev = current_noise_type.split('_')
-            action_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(nb_actions), sigma=float(stddev) * np.ones(nb_actions),dt=1e-1)
+            action_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(nb_actions), sigma=float(stddev) * np.ones(nb_actions),dt=1e-2)
         else:
             raise RuntimeError('unknown noise type "{}"'.format(current_noise_type))
 
@@ -63,7 +63,7 @@ def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
     seed = seed + 1000000 * rank
     logger.info('rank {}: seed={}, logdir={}'.format(rank, seed, logger.get_dir()))
     tf.reset_default_graph()
-    #set_global_seeds(seed)
+    set_global_seeds(seed)
     #env.seed(seed)
 
     # Disable logging for rank != 0 to avoid noise.
@@ -97,12 +97,12 @@ def parse_args():
     parser.add_argument('--reward-scale', type=float, default=1.)
     parser.add_argument('--clip-norm', type=float, default=5.0)
     parser.add_argument('--nb-epochs', type=int, default=500)  # with default settings, perform 1M steps total
-    parser.add_argument('--nb-epoch-cycles', type=int, default=20)
-    parser.add_argument('--nb-train-steps', type=int, default=50)  # per epoch cycle and MPI worker
+    parser.add_argument('--nb-epoch-cycles', type=int, default=2)
+    parser.add_argument('--nb-train-steps', type=int, default=2)  # per epoch cycle and MPI worker
     parser.add_argument('--nb-eval-steps', type=int, default=1000)  # per epoch cycle and MPI worker
     parser.add_argument('--nb-rollout-steps', type=int, default=100)  # per epoch cycle and MPI worker
-    parser.add_argument('--noise-type', type=str, default='ou_0.2')  # choices are adaptive-param_xx, ou_xx, normal_xx, none
-    boolean_flag(parser, 'evaluation', default=True)
+    parser.add_argument('--noise-type', type=str, default='ou_0.2,adaptive-param_0.2')  # choices are adaptive-param_xx, ou_xx, normal_xx, none
+    boolean_flag(parser, 'evaluation', default=False)
     return vars(parser.parse_args())
 
 

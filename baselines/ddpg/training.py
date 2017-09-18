@@ -17,7 +17,7 @@ from helper import *
 def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, param_noise, actor, critic,
     normalize_returns, normalize_observations, critic_l2_reg, actor_lr, critic_lr, action_noise,
     popart, gamma, clip_norm, nb_train_steps, nb_rollout_steps, nb_eval_steps, batch_size, memory,
-    tau=0.01, eval_env=None, param_noise_adaption_interval=50):
+    tau=0.01, eval_env=None, param_noise_adaption_interval=50,load_model=False):
     rank = MPI.COMM_WORLD.Get_rank()
 
     #assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
@@ -36,6 +36,9 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
         saver = tf.train.Saver()
     else:
         saver = None
+
+    if load_model:
+	U.load_state("./models")
     
     step = 0
     episode = 0
@@ -132,21 +135,22 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 # Evaluate.
                 eval_episode_rewards = []
                 eval_qs = []
+		eval_episode_count = 0
                 if eval_env is not None:
                     eval_env.reset()
-                    s = env.step(ea)[0]
-                    s1 = env.step(ea)[0]
-                    s = process_state(s,s1)
+                    eval_s = eval_env.step(ea)[0]
+                    eval_s1 = eval_env.step(ea)[0]
+                    eval_s = process_state(eval_s,eval_s1)
                     eval_episode_reward = 0.
                     for t_rollout in range(nb_eval_steps):
-                        eval_action, eval_q = agent.pi(s, apply_noise=False, compute_Q=True)
+                        eval_action, eval_q = agent.pi(eval_s, apply_noise=False, compute_Q=True)
                         eval_obs, eval_r, eval_done, eval_info = eval_env.step(max_action * eval_action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
                         if render_eval:
                             eval_env.render()
                         eval_episode_reward += eval_r
-                        s1 = process_state(s1,eval_obs)
-                        s = s1
-                        s1 = eval_obs
+                        eval_s1 = process_state(eval_s1,eval_obs)
+                        eval_s = eval_s1
+                        eval_s1 = eval_obs
 
                         eval_qs.append(eval_q)
                         if eval_done:
@@ -154,8 +158,12 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                             eval_episode_rewards.append(eval_episode_reward)
                             eval_episode_rewards_history.append(eval_episode_reward)
                             eval_episode_reward = 0.
-                            break
-
+			    eval_episode_count += 1
+			    if eval_episode_count == 2:
+                            	break
+	    
+	    if epoch % 50 == 0 and rank == 0:
+		saver.save(sess,"./models/model-"+str(epoch)+".ckpt")
             # Log stats.
             epoch_train_duration = time.time() - epoch_start_time
             duration = time.time() - start_time

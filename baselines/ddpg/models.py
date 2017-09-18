@@ -63,7 +63,7 @@ class Critic(Model):
                 x = tc.layers.layer_norm(x, center=True, scale=True)
             x = tf.nn.relu(x)
 
-            x = tf.concat([x, action], axis=-1)
+            x = tf.concat([x, tf.nn.relu(action)], axis=-1)
             x = tf.layers.dense(x, 64)
             if self.layer_norm:
                 x = tc.layers.layer_norm(x, center=True, scale=True)

@@ -269,7 +269,7 @@ class DDPG(object):
         reward *= self.reward_scale
         self.memory.append(obs0, action, reward, obs1, terminal1)
         if self.normalize_observations:
-            self.obs_rms.update(np.array([obs0]))
+            self.obs_rms.update(np.asarray([obs0]))
 
     def train(self):
         # Get a batch.
