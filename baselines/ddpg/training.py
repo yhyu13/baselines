@@ -27,7 +27,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
         gamma=gamma, tau=tau, normalize_returns=normalize_returns, normalize_observations=normalize_observations,
         batch_size=batch_size, action_noise=action_noise, param_noise=param_noise, critic_l2_reg=critic_l2_reg,
         actor_lr=actor_lr, critic_lr=critic_lr, enable_popart=popart, clip_norm=clip_norm,
-        reward_scale=reward_scale)
+        reward_scale=reward_scale,action_range=(0.0,1.0))
     logger.info('Using agent with the following configuration:')
     logger.info(str(agent.__dict__.items()))
 
@@ -85,19 +85,25 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                     if rank == 0 and render:
                         env.render()
                     #assert max_action.shape == action.shape
-                    new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
-                    s1 = process_state(s1,new_obs)
-                    t += 1
+		    temp = 0
+		    for i in range(3):
+                    	new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
+                        temp += r / 0.01
+			if i == 1:
+			    s1 = new_obs
+			if done:
+			    break
+		    s1 = process_state(s1,new_obs)
+                    t += 3
                     if rank == 0 and render:
                         env.render()
-                    r = (r/0.01 + int(not done) * 0.1 + int((s1[2]/0.80)<1.0) * -1.)
-                    episode_reward += r
-                    episode_step += 1
+                    episode_reward += temp
+                    episode_step += 3
 
                     # Book-keeping.
                     epoch_actions.append(action)
                     epoch_qs.append(q)
-                    agent.store_transition(s, action, r, s1, done)
+                    agent.store_transition(s, action, temp, s1, done)
                     s = s1
                     s1 = new_obs
 
@@ -162,7 +168,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
 			    if eval_episode_count == 2:
                             	break
 	    
-	    if epoch % 50 == 0 and rank == 0:
+	    if epoch % 10 == 0 and rank == 0:
 		saver.save(sess,"./models/model-"+str(epoch)+".ckpt")
             # Log stats.
             epoch_train_duration = time.time() - epoch_start_time
@@ -204,6 +210,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 logger.record_tabular(key, combined_stats[key])
             logger.dump_tabular()
             logger.info('')
+	    '''
             logdir = logger.get_dir()
             if rank == 0 and logdir:
                 if hasattr(env, 'get_state'):
@@ -212,4 +219,5 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 if eval_env and hasattr(eval_env, 'get_state'):
                     with open(os.path.join(logdir, 'eval_env_state.pkl'), 'wb') as f:
                         pickle.dump(eval_env.get_state(), f)
+	    '''
 

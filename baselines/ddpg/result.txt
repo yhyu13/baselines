@@ -1,0 +1,1311 @@
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Updating Model file from 30000 to latest format...
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+Loaded model gait9dof18musc_Thelen_BigSpheres.osim from file /home/ubuntu/anaconda2/envs/opensim-rl/lib/python2.7/site-packages/osim/env/../models/gait9dof18musc.osim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2017-09-18 05:06:56.096675: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.096787: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.096843: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.096893: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.096943: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+
+
+2017-09-18 05:06:56.099102: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.099125: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.099135: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.099149: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.099158: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+
+
+2017-09-18 05:06:56.101879: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.101942: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.101991: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.102034: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.102079: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+
+
+2017-09-18 05:06:56.104070: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.104134: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.104183: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.104229: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.104275: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+
+
+
+
+
+
+2017-09-18 05:06:56.109506: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.109589: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.109654: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.109710: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.109762: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+2017-09-18 05:06:56.110760: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110791: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110803: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110809: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110816: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+2017-09-18 05:06:56.110835: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110861: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110871: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110878: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.110884: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+2017-09-18 05:06:56.111030: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.111102: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.111154: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.111212: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.111260: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+2017-09-18 05:06:56.120027: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.120065: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.120076: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.120084: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.120090: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+2017-09-18 05:06:56.121192: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.121264: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.121325: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.121378: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.121430: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+2017-09-18 05:06:56.127071: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.127137: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.127189: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.127239: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.127288: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+2017-09-18 05:06:56.129329: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.129361: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.129373: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.129380: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.129388: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+2017-09-18 05:06:56.134535: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.134607: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.134662: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.134714: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.134766: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+2017-09-18 05:06:56.138656: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.138728: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.138783: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.138836: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.138888: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+2017-09-18 05:06:56.163037: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.163120: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.163173: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.163223: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.163282: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.228823: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.228961: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.229011: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.229057: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-18 05:06:56.229102: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0417  |
+| obs_rms_std             | 0.575    |
+| reference_Q_mean        | -0.00578 |
+| reference_Q_std         | 0.0106   |
+| reference_action_mean   | 0.084    |
+| reference_action_std    | 0.627    |
+| reference_actor_Q_mean  | -0.0048  |
+| reference_actor_Q_std   | 0.0097   |
+| rollout/Q_mean          | -0.00834 |
+| rollout/actions_mean    | 0.311    |
+| rollout/actions_std     | 0.445    |
+| rollout/episode_steps   | 109      |
+| rollout/episodes        | 287      |
+| rollout/return          | 0.287    |
+| rollout/return_history  | 0.289    |
+| total/duration          | 5.69e+03 |
+| total/episodes          | 17.9     |
+| total/epochs            | 1        |
+| total/steps             | 2000     |
+| total/steps_per_second  | 0.352    |
+| train/loss_actor        | 0.00549  |
+| train/loss_critic       | 4.81e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.07    |
+| obs_rms_std             | 0.633    |
+| reference_Q_mean        | -0.0094  |
+| reference_Q_std         | 0.0104   |
+| reference_action_mean   | -0.101   |
+| reference_action_std    | 0.716    |
+| reference_actor_Q_mean  | -0.00799 |
+| reference_actor_Q_std   | 0.00954  |
+| rollout/Q_mean          | -0.0052  |
+| rollout/actions_mean    | 0.566    |
+| rollout/actions_std     | 0.429    |
+| rollout/episode_steps   | 73       |
+| rollout/episodes        | 872      |
+| rollout/return          | 0.3      |
+| rollout/return_history  | 0.3      |
+| total/duration          | 1.16e+04 |
+| total/episodes          | 54.5     |
+| total/epochs            | 2        |
+| total/steps             | 4000     |
+| total/steps_per_second  | 0.345    |
+| train/loss_actor        | 0.00533  |
+| train/loss_critic       | 1.65e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.093   |
+| obs_rms_std             | 0.689    |
+| reference_Q_mean        | -0.00895 |
+| reference_Q_std         | 0.00986  |
+| reference_action_mean   | -0.00649 |
+| reference_action_std    | 0.861    |
+| reference_actor_Q_mean  | -0.00718 |
+| reference_actor_Q_std   | 0.00907  |
+| rollout/Q_mean          | -0.00423 |
+| rollout/actions_mean    | 0.613    |
+| rollout/actions_std     | 0.387    |
+| rollout/episode_steps   | 59       |
+| rollout/episodes        | 1.62e+03 |
+| rollout/return          | 0.236    |
+| rollout/return_history  | 0.24     |
+| total/duration          | 2e+04    |
+| total/episodes          | 101      |
+| total/epochs            | 3        |
+| total/steps             | 6000     |
+| total/steps_per_second  | 0.301    |
+| train/loss_actor        | 0.00457  |
+| train/loss_critic       | 1.53e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0733  |
+| obs_rms_std             | 0.694    |
+| reference_Q_mean        | -0.0104  |
+| reference_Q_std         | 0.00998  |
+| reference_action_mean   | 0.00919  |
+| reference_action_std    | 0.91     |
+| reference_actor_Q_mean  | -0.00831 |
+| reference_actor_Q_std   | 0.0091   |
+| rollout/Q_mean          | -0.00668 |
+| rollout/actions_mean    | 0.651    |
+| rollout/actions_std     | 0.39     |
+| rollout/episode_steps   | 69.1     |
+| rollout/episodes        | 1.84e+03 |
+| rollout/return          | 0.107    |
+| rollout/return_history  | 0.0842   |
+| total/duration          | 2.15e+04 |
+| total/episodes          | 115      |
+| total/epochs            | 4        |
+| total/steps             | 8000     |
+| total/steps_per_second  | 0.372    |
+| train/loss_actor        | 0.00671  |
+| train/loss_critic       | 1.22e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0625  |
+| obs_rms_std             | 0.686    |
+| reference_Q_mean        | -0.00863 |
+| reference_Q_std         | 0.00963  |
+| reference_action_mean   | 0.161    |
+| reference_action_std    | 0.851    |
+| reference_actor_Q_mean  | -0.00772 |
+| reference_actor_Q_std   | 0.00918  |
+| rollout/Q_mean          | -0.00776 |
+| rollout/actions_mean    | 0.696    |
+| rollout/actions_std     | 0.37     |
+| rollout/episode_steps   | 77.3     |
+| rollout/episodes        | 2.05e+03 |
+| rollout/return          | 0.0408   |
+| rollout/return_history  | -0.0471  |
+| total/duration          | 2.26e+04 |
+| total/episodes          | 128      |
+| total/epochs            | 5        |
+| total/steps             | 10000    |
+| total/steps_per_second  | 0.443    |
+| train/loss_actor        | 0.00787  |
+| train/loss_critic       | 1.15e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0546  |
+| obs_rms_std             | 0.672    |
+| reference_Q_mean        | -0.00942 |
+| reference_Q_std         | 0.00939  |
+| reference_action_mean   | 0.141    |
+| reference_action_std    | 0.864    |
+| reference_actor_Q_mean  | -0.00853 |
+| reference_actor_Q_std   | 0.00908  |
+| rollout/Q_mean          | -0.00797 |
+| rollout/actions_mean    | 0.727    |
+| rollout/actions_std     | 0.353    |
+| rollout/episode_steps   | 83.6     |
+| rollout/episodes        | 2.29e+03 |
+| rollout/return          | 0.0184   |
+| rollout/return_history  | -0.111   |
+| total/duration          | 2.33e+04 |
+| total/episodes          | 143      |
+| total/epochs            | 6        |
+| total/steps             | 12000    |
+| total/steps_per_second  | 0.515    |
+| train/loss_actor        | 0.00762  |
+| train/loss_critic       | 1.14e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0435  |
+| obs_rms_std             | 0.666    |
+| reference_Q_mean        | -0.00833 |
+| reference_Q_std         | 0.00942  |
+| reference_action_mean   | 0.207    |
+| reference_action_std    | 0.88     |
+| reference_actor_Q_mean  | -0.00668 |
+| reference_actor_Q_std   | 0.00908  |
+| rollout/Q_mean          | -0.00835 |
+| rollout/actions_mean    | 0.747    |
+| rollout/actions_std     | 0.338    |
+| rollout/episode_steps   | 87.6     |
+| rollout/episodes        | 2.55e+03 |
+| rollout/return          | -0.0364  |
+| rollout/return_history  | -0.231   |
+| total/duration          | 2.4e+04  |
+| total/episodes          | 159      |
+| total/epochs            | 7        |
+| total/steps             | 14000    |
+| total/steps_per_second  | 0.584    |
+| train/loss_actor        | 0.00773  |
+| train/loss_critic       | 1.1e-05  |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0312  |
+| obs_rms_std             | 0.662    |
+| reference_Q_mean        | -0.00858 |
+| reference_Q_std         | 0.00956  |
+| reference_action_mean   | 0.241    |
+| reference_action_std    | 0.921    |
+| reference_actor_Q_mean  | -0.00614 |
+| reference_actor_Q_std   | 0.00926  |
+| rollout/Q_mean          | -0.0088  |
+| rollout/actions_mean    | 0.763    |
+| rollout/actions_std     | 0.326    |
+| rollout/episode_steps   | 90.1     |
+| rollout/episodes        | 2.83e+03 |
+| rollout/return          | -0.11    |
+| rollout/return_history  | -0.401   |
+| total/duration          | 2.47e+04 |
+| total/episodes          | 177      |
+| total/epochs            | 8        |
+| total/steps             | 16000    |
+| total/steps_per_second  | 0.648    |
+| train/loss_actor        | 0.00762  |
+| train/loss_critic       | 8.27e-06 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0219  |
+| obs_rms_std             | 0.655    |
+| reference_Q_mean        | -0.00537 |
+| reference_Q_std         | 0.00837  |
+| reference_action_mean   | 0.329    |
+| reference_action_std    | 0.935    |
+| reference_actor_Q_mean  | -0.00312 |
+| reference_actor_Q_std   | 0.00844  |
+| rollout/Q_mean          | -0.00917 |
+| rollout/actions_mean    | 0.776    |
+| rollout/actions_std     | 0.316    |
+| rollout/episode_steps   | 92.3     |
+| rollout/episodes        | 3.11e+03 |
+| rollout/return          | -0.171   |
+| rollout/return_history  | -0.565   |
+| total/duration          | 2.54e+04 |
+| total/episodes          | 194      |
+| total/epochs            | 9        |
+| total/steps             | 18000    |
+| total/steps_per_second  | 0.709    |
+| train/loss_actor        | 0.00748  |
+| train/loss_critic       | 8.25e-06 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.0151  |
+| obs_rms_std             | 0.646    |
+| reference_Q_mean        | -0.00511 |
+| reference_Q_std         | 0.00785  |
+| reference_action_mean   | 0.327    |
+| reference_action_std    | 0.938    |
+| reference_actor_Q_mean  | -0.00361 |
+| reference_actor_Q_std   | 0.00773  |
+| rollout/Q_mean          | -0.00942 |
+| rollout/actions_mean    | 0.785    |
+| rollout/actions_std     | 0.307    |
+| rollout/episode_steps   | 94.4     |
+| rollout/episodes        | 3.38e+03 |
+| rollout/return          | -0.222   |
+| rollout/return_history  | -0.624   |
+| total/duration          | 2.61e+04 |
+| total/episodes          | 211      |
+| total/epochs            | 10       |
+| total/steps             | 20000    |
+| total/steps_per_second  | 0.767    |
+| train/loss_actor        | 0.00846  |
+| train/loss_critic       | 2.15e-05 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.00959 |
+| obs_rms_std             | 0.638    |
+| reference_Q_mean        | -0.0065  |
+| reference_Q_std         | 0.00748  |
+| reference_action_mean   | 0.33     |
+| reference_action_std    | 0.941    |
+| reference_actor_Q_mean  | -0.00381 |
+| reference_actor_Q_std   | 0.00769  |
+| rollout/Q_mean          | -0.00958 |
+| rollout/actions_mean    | 0.794    |
+| rollout/actions_std     | 0.299    |
+| rollout/episode_steps   | 96.2     |
+| rollout/episodes        | 3.65e+03 |
+| rollout/return          | -0.266   |
+| rollout/return_history  | -0.661   |
+| total/duration          | 2.67e+04 |
+| total/episodes          | 228      |
+| total/epochs            | 11       |
+| total/steps             | 22000    |
+| total/steps_per_second  | 0.823    |
+| train/loss_actor        | 0.00726  |
+| train/loss_critic       | 6.41e-06 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.00498 |
+| obs_rms_std             | 0.63     |
+| reference_Q_mean        | -0.00386 |
+| reference_Q_std         | 0.00725  |
+| reference_action_mean   | 0.332    |
+| reference_action_std    | 0.941    |
+| reference_actor_Q_mean  | -0.00496 |
+| reference_actor_Q_std   | 0.00706  |
+| rollout/Q_mean          | -0.00968 |
+| rollout/actions_mean    | 0.801    |
+| rollout/actions_std     | 0.292    |
+| rollout/episode_steps   | 97.7     |
+| rollout/episodes        | 3.92e+03 |
+| rollout/return          | -0.303   |
+| rollout/return_history  | -0.779   |
+| total/duration          | 2.74e+04 |
+| total/episodes          | 245      |
+| total/epochs            | 12       |
+| total/steps             | 24000    |
+| total/steps_per_second  | 0.875    |
+| train/loss_actor        | 0.0075   |
+| train/loss_critic       | 9.26e-06 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | -0.00114 |
+| obs_rms_std             | 0.624    |
+| reference_Q_mean        | -0.00317 |
+| reference_Q_std         | 0.00674  |
+| reference_action_mean   | 0.425    |
+| reference_action_std    | 0.831    |
+| reference_actor_Q_mean  | -0.00224 |
+| reference_actor_Q_std   | 0.00695  |
+| rollout/Q_mean          | -0.00972 |
+| rollout/actions_mean    | 0.807    |
+| rollout/actions_std     | 0.286    |
+| rollout/episode_steps   | 99       |
+| rollout/episodes        | 4.19e+03 |
+| rollout/return          | -0.332   |
+| rollout/return_history  | -0.789   |
+| total/duration          | 2.81e+04 |
+| total/episodes          | 262      |
+| total/epochs            | 13       |
+| total/steps             | 26000    |
+| total/steps_per_second  | 0.924    |
+| train/loss_actor        | 0.00775  |
+| train/loss_critic       | 8.4e-06  |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | 0.0024   |
+| obs_rms_std             | 0.617    |
+| reference_Q_mean        | -0.00399 |
+| reference_Q_std         | 0.00641  |
+| reference_action_mean   | 0.365    |
+| reference_action_std    | 0.888    |
+| reference_actor_Q_mean  | -0.00239 |
+| reference_actor_Q_std   | 0.00658  |
+| rollout/Q_mean          | -0.00978 |
+| rollout/actions_mean    | 0.813    |
+| rollout/actions_std     | 0.28     |
+| rollout/episode_steps   | 100      |
+| rollout/episodes        | 4.47e+03 |
+| rollout/return          | -0.361   |
+| rollout/return_history  | -0.795   |
+| total/duration          | 2.88e+04 |
+| total/episodes          | 279      |
+| total/epochs            | 14       |
+| total/steps             | 28000    |
+| total/steps_per_second  | 0.971    |
+| train/loss_actor        | 0.00762  |
+| train/loss_critic       | 4.84e-06 |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+| obs_rms_mean            | 0.00535  |
+| obs_rms_std             | 0.612    |
+| reference_Q_mean        | -0.00406 |
+| reference_Q_std         | 0.0064   |
+| reference_action_mean   | 0.275    |
+| reference_action_std    | 0.919    |
+| reference_actor_Q_mean  | -0.00293 |
+| reference_actor_Q_std   | 0.00655  |
+| rollout/Q_mean          | -0.00981 |
+| rollout/actions_mean    | 0.778    |
+| rollout/actions_std     | 0.368    |
+| rollout/episode_steps   | 101      |
+| rollout/episodes        | 4.74e+03 |
+| rollout/return          | -0.385   |
+| rollout/return_history  | -0.793   |
+| total/duration          | 2.96e+04 |
+| total/episodes          | 297      |
+| total/epochs            | 15       |
+| total/steps             | 30000    |
+| total/steps_per_second  | 1.01     |
+| train/loss_actor        | 0.00791  |
+| train/loss_critic       | 5.2e-06  |
+| train/param_noise_di... | 0        |
+--------------------------------------
+
+
+=====================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   EXIT CODE: 15
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+=====================================================================================
+APPLICATION TERMINATED WITH THE EXIT STRING: Terminated (signal 15)
