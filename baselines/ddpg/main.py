@@ -14,7 +14,7 @@ from baselines.ddpg.noise import *
 
 import tensorflow as tf
 from mpi4py import MPI
-from helper import ei
+from helper import *
 
 def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
     # Configure things.
@@ -22,12 +22,12 @@ def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
     if rank != 0: logger.set_level(logger.DISABLED)
 
     # Create envs.
-    env = ei(vis=False,seed=seed,diff=0)#gym.make(env_id)
+    env = RunEnv(visualize=False)#gym.make(env_id)
     #env = bench.Monitor(env, logger.get_dir() and os.path.join(logger.get_dir(), "%i.monitor.json"%rank))
     #gym.logger.setLevel(logging.WARN)
     
     if evaluation and rank==0:
-        eval_env = ei(vis=False,seed=seed,diff=0)
+        eval_env = RunEnv(visualize=True)
         #eval_env = bench.Monitor(eval_env, os.path.join(logger.get_dir(), 'gym_eval'))
         #env = bench.Monitor(env, None)
     else:
@@ -81,7 +81,7 @@ def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
 def parse_args():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
-    parser.add_argument('--env-id', type=str, default='HalfCheetah-v1')
+    parser.add_argument('--env-id', type=str, default='osim-rl')
     boolean_flag(parser, 'render-eval', default=False)
     boolean_flag(parser, 'layer-norm', default=True)
     boolean_flag(parser, 'render', default=False)
@@ -97,8 +97,8 @@ def parse_args():
     parser.add_argument('--reward-scale', type=float, default=1.)
     parser.add_argument('--clip-norm', type=float, default=5.0)
     parser.add_argument('--nb-epochs', type=int, default=500)  # with default settings, perform 1M steps total
-    parser.add_argument('--nb-epoch-cycles', type=int, default=2)
-    parser.add_argument('--nb-train-steps', type=int, default=2)  # per epoch cycle and MPI worker
+    parser.add_argument('--nb-epoch-cycles', type=int, default=20)
+    parser.add_argument('--nb-train-steps', type=int, default=50)  # per epoch cycle and MPI worker
     parser.add_argument('--nb-eval-steps', type=int, default=1000)  # per epoch cycle and MPI worker
     parser.add_argument('--nb-rollout-steps', type=int, default=100)  # per epoch cycle and MPI worker
     parser.add_argument('--noise-type', type=str, default='ou_0.2,adaptive-param_0.2')  # choices are adaptive-param_xx, ou_xx, normal_xx, none

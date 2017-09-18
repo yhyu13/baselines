@@ -50,7 +50,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
         sess.graph.finalize()
 
         agent.reset()
-        obs = env.reset()
+        obs = env.reset(difficulty=0)
         # hangyu5 Sep17th
         ea = engineered_action(0.1)
         s = env.step(ea)[0]
@@ -112,7 +112,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                         episodes += 1
 
                         agent.reset()
-                        env.reset()
+                        env.reset(difficulty=0)
                         s = env.step(ea)[0]
                         s1 = env.step(ea)[0]
                         s = process_state(s,s1)
@@ -137,7 +137,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 eval_qs = []
 		eval_episode_count = 0
                 if eval_env is not None:
-                    eval_env.reset()
+                    eval_env.reset(difficulty=2)
                     eval_s = eval_env.step(ea)[0]
                     eval_s1 = eval_env.step(ea)[0]
                     eval_s = process_state(eval_s,eval_s1)
@@ -154,7 +154,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
 
                         eval_qs.append(eval_q)
                         if eval_done:
-                            eval_obs = eval_env.reset()
+                            eval_obs = eval_env.reset(difficulty=2)
                             eval_episode_rewards.append(eval_episode_reward)
                             eval_episode_rewards_history.append(eval_episode_reward)
                             eval_episode_reward = 0.
