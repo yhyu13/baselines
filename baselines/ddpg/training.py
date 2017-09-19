@@ -17,7 +17,7 @@ from helper import *
 def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, param_noise, actor, critic,
     normalize_returns, normalize_observations, critic_l2_reg, actor_lr, critic_lr, action_noise,
     popart, gamma, clip_norm, nb_train_steps, nb_rollout_steps, nb_eval_steps, batch_size, memory,
-    tau=0.01, eval_env=None, param_noise_adaption_interval=50,load_model=False):
+    tau=0.01, eval_env=None, param_noise_adaption_interval=50,load_model=False,n_step=3,demo=True):
     rank = MPI.COMM_WORLD.Get_rank()
 
     #assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
@@ -61,6 +61,9 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
         episode_step = 0
         episodes = 0
         t = 0
+        #hangyu5
+        demo_step = 0
+        apply_demo = demo
 
         epoch = 0
         start_time = time.time()
@@ -86,19 +89,24 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                         env.render()
                     #assert max_action.shape == action.shape
 		    temp = 0
-		    for i in range(3):
-                    	new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
-                        temp += r / 0.01
-			if i == 1:
+		    for i in range(n_step):
+                        if apply_demo and demo_step<50:
+                            new_obs, r, done, info = env.step(ea)
+                            action = ea
+                            demo_step += 1
+                    	else:
+                            new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
+                        temp += (r/0.01 + int(not done) * 0.1 + int((new_obs[2]/0.80)<1.0) * -1.)
+			if i == n_step-2:
 			    s1 = new_obs
 			if done:
 			    break
 		    s1 = process_state(s1,new_obs)
-                    t += 3
+                    t += n_step
                     if rank == 0 and render:
                         env.render()
                     episode_reward += temp
-                    episode_step += 3
+                    episode_step += n_step
 
                     # Book-keeping.
                     epoch_actions.append(action)
@@ -122,6 +130,10 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                         s = env.step(ea)[0]
                         s1 = env.step(ea)[0]
                         s = process_state(s,s1)
+                        if demo:
+                            apply_demo = np.random.rand()<0.5
+                            ea = engineered_action(np.random.rand())
+                            demo_step=0
 
                 # Train.
                 epoch_actor_losses = []
@@ -129,11 +141,11 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 epoch_adaptive_distances = []
                 for t_train in range(nb_train_steps):
                     # Adapt param noise, if necessary.
-                    if para_noise is not None and memory.nb_entries >= batch_size and t % param_noise_adaption_interval == 0:
+                    if param_noise is not None and memory.nb_entries >= batch_size and t % param_noise_adaption_interval == 0:
                         distance = agent.adapt_param_noise()
                         epoch_adaptive_distances.append(distance)
 
-		    if memory.nb.entries >= batch_size
+		    if memory.nb_entries >= batch_size:
                     	cl, al = agent.train()
                     	epoch_critic_losses.append(cl)
                     	epoch_actor_losses.append(al)
