@@ -70,7 +70,7 @@ def run(env_id, seed, noise_type, layer_norm, evaluation, **kwargs):
     if rank == 0:
         start_time = time.time()
     training.train(env=env, eval_env=eval_env, param_noise=param_noise,
-        action_noise=action_noise, actor=actor, critic=critic, memory=memory,tau=1e-4, **kwargs)
+        action_noise=action_noise, actor=actor, critic=critic, memory=memory,tau=1e-3, **kwargs)
     env.close()
     if eval_env is not None:
         eval_env.close()
@@ -89,19 +89,19 @@ def parse_args():
     boolean_flag(parser, 'normalize-observations', default=True)
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--critic-l2-reg', type=float, default=1e-2)
-    parser.add_argument('--batch-size', type=int, default=64)  # per MPI worker
+    parser.add_argument('--batch-size', type=int, default=1024)  # per MPI worker
     parser.add_argument('--actor-lr', type=float, default=1e-4)
-    parser.add_argument('--critic-lr', type=float, default=5e-4)
+    parser.add_argument('--critic-lr', type=float, default=1e-3)
     boolean_flag(parser, 'popart', default=False)
     parser.add_argument('--gamma', type=float, default=0.995)
     parser.add_argument('--reward-scale', type=float, default=10.)
     parser.add_argument('--clip-norm', type=float, default=5.0)
-    parser.add_argument('--nb-epochs', type=int, default=500)  # with default settings, perform 1M steps total
-    parser.add_argument('--nb-epoch-cycles', type=int, default=20)
-    parser.add_argument('--nb-train-steps', type=int, default=50)  # per epoch cycle and MPI worker
+    parser.add_argument('--nb-epochs', type=int, default=100)  # with default settings, perform 1M steps total
+    parser.add_argument('--nb-epoch-cycles', type=int, default=10)
+    parser.add_argument('--nb-train-steps', type=int, default=5)  # per epoch cycle and MPI worker
     parser.add_argument('--nb-eval-steps', type=int, default=1000)  # per epoch cycle and MPI worker
-    parser.add_argument('--nb-rollout-steps', type=int, default=100)  # per epoch cycle and MPI worker
-    parser.add_argument('--noise-type', type=str, default='ou_0.2,adaptive-param_0.2')  # choices are adaptive-param_xx, ou_xx, normal_xx, none
+    parser.add_argument('--nb-rollout-steps', type=int, default=1024)  # per epoch cycle and MPI worker
+    parser.add_argument('--noise-type', type=str, default='ou_0.2')  # choices are adaptive-param_xx, ou_xx, normal_xx, none
     boolean_flag(parser, 'evaluation', default=False)
     return vars(parser.parse_args())
 
