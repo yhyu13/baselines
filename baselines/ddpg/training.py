@@ -27,7 +27,7 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
         gamma=gamma, tau=tau, normalize_returns=normalize_returns, normalize_observations=normalize_observations,
         batch_size=batch_size, action_noise=action_noise, param_noise=param_noise, critic_l2_reg=critic_l2_reg,
         actor_lr=actor_lr, critic_lr=critic_lr, enable_popart=popart, clip_norm=clip_norm,
-        reward_scale=reward_scale,action_range=(0.0,1.0))
+        reward_scale=reward_scale,action_range=(0.05,0.95))
     logger.info('Using agent with the following configuration:')
     logger.info(str(agent.__dict__.items()))
 
