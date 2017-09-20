@@ -42,8 +42,7 @@ class Actor(Model):
                 x = tc.layers.layer_norm(x, center=True, scale=True)
             x = tf.nn.relu(x)
             
-	    init = tf.Variable(tf.random_uniform([self.nb_actions],-4.,-2.))
-            x = tf.layers.dense(x, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(minval=-3e-3, maxval=3e-3),bias_initializer=init.initialized_value())
+            x = tf.layers.dense(x, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(minval=-3e-3, maxval=3e-3),bias_initializer=tf.random_uniform_initializer(minval=-2.1,maxval=-1.9))
             x = tf.sigmoid(x)
 	    #x = tf.nn.relu(xsdf)
         return x
